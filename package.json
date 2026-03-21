@@ -1,0 +1,25 @@
+{
+  "name": "pc-spec-tool",
+  "version": "1.0.0",
+  "description": "PC spec viewer",
+  "author": "Your Name",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^39.8.3",
+    "systeminformation": "^5.31.5"
+  },
+  "devDependencies": {
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.example.pcspectool",
+    "productName": "PC Spec Tool",
+    "win": {
+      "target": "nsis"
+    }
+  }
+}
