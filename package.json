@@ -2,7 +2,7 @@
   "name": "pc-spec-tool",
   "version": "1.0.0",
   "description": "PC spec viewer",
-  "author": "Your Name",
+  "author": "Your Nam",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
