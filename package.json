@@ -1,8 +1,8 @@
 {
   "name": "pc-spec-tool",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "PC spec viewer",
-  "author": "Your Nam",
+  "author": "akisho",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
