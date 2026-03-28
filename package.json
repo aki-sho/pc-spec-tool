@@ -8,11 +8,11 @@
     "start": "electron .",
     "build": "electron-builder"
   },
-  "devDependencies": {
-    "electron": "^39.8.3",
+  "dependencies": {
     "systeminformation": "^5.31.5"
   },
   "devDependencies": {
+    "electron": "^39.8.3",
     "electron-builder": "^26.8.1"
   },
   "build": {
