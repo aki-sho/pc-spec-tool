@@ -46,14 +46,6 @@ GitHub の **Releases** では、以下の形式で配布します。
 `win-unpacked` フォルダを zip 化したものです。  
 展開後、`PC Spec Tool.exe` を実行して起動します。
 
-## スクリーンショット
-必要に応じて後から追加してください。
-
-例:
-
-- `assets/screenshot-1.png`：メイン画面
-- `assets/screenshot-2.png`：スペック表示画面
-
 ## インストール
 ### 1. Releases からダウンロード
 GitHub の **Releases** から、インストール版またはポータブル版を取得します。
