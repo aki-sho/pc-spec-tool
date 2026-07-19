@@ -36,26 +36,46 @@ Electron を使用して構成しており、HTML・CSS・JavaScript ベース�
 GitHub の **Releases** では、以下の形式で配布します。
 
 ### インストール版
-`PC Spec Tool Setup 1.0.0.exe`
+`PC-Spec-Tool-Setup-1.0.2.exe`
 
-インストーラー形式でセットアップして利用する版です。
+NSISインストーラー形式で、通常のインストール、スタートメニュー登録、アンインストールに対応しています。
+設定やElectronデータは通常のAppDataへ保存されます。
 
 ### ポータブル版
-`PC-Spec-Tool-Portable-1.0.0.zip`
+`PC-Spec-Tool-Portable-1.0.2.exe`
 
-`win-unpacked` フォルダを zip 化したものです。  
-展開後、`PC Spec Tool.exe` を実行して起動します。
+`PC-Spec-Tool-Portable-1.0.2.zip`
+
+DLL、resources、localesなどが外に並ばない単体EXEです。
+
+起動すると、EXEと同じ場所に `PC-Spec-Tool-PortableData` が作成され、設定、ログ、キャッシュ、一時ファイルなどが保存されます。
 
 ## インストール
 ### 1. Releases からダウンロード
 GitHub の **Releases** から、インストール版またはポータブル版を取得します。
 
 ### 2. 利用方法
-- インストール版: `PC Spec Tool Setup 1.0.0.exe` を実行してセットアップ
-- ポータブル版: zip を展開し、`PC Spec Tool.exe` を起動
+- インストール版: `PC-Spec-Tool-Setup-1.0.2.exe` を実行してセットアップ
+- ポータブル版: ZIPを展開し、`PC-Spec-Tool-Portable-1.0.2.exe` を起動
 
 ## 開発環境での起動方法
 ### 1. リポジトリを取得
 ```bash
 git clone https://github.com/aki-sho/pc-spec-tool.git
 cd pc-spec-tool
+```
+
+### 2. 依存関係をインストール
+```bash
+npm install
+```
+
+### 3. 開発版を起動
+```bash
+npm start
+```
+
+### 4. Windows向け配布物を作成
+```powershell
+npm run build:release
+```

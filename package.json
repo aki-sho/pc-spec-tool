@@ -1,15 +1,16 @@
 {
   "name": "pc-spec-tool",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "PC spec viewer",
   "author": "akisho",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder --win --x64",
+    "build:release": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-release.ps1"
   },
   "dependencies": {
-    "systeminformation": "^5.31.5"
+    "systeminformation": "^5.31.17"
   },
   "devDependencies": {
     "electron": "^39.8.3",
@@ -18,8 +19,44 @@
   "build": {
     "appId": "com.example.pcspectool",
     "productName": "PC Spec Tool",
+    "asar": true,
+    "files": [
+      "**/*",
+      "!scripts/**/*",
+      "!build/**/*"
+    ],
     "win": {
-      "target": "nsis"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "artifactName": "PC-Spec-Tool-Setup-${version}.${ext}",
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createStartMenuShortcut": true,
+      "createDesktopShortcut": false,
+      "shortcutName": "PC Spec Tool",
+      "uninstallDisplayName": "PC Spec Tool",
+      "deleteAppDataOnUninstall": false,
+      "differentialPackage": false
+    },
+    "portable": {
+      "artifactName": "PC-Spec-Tool-Portable-${version}.${ext}",
+      "requestExecutionLevel": "user"
     }
   }
 }
