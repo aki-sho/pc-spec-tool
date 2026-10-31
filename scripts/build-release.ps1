@@ -36,7 +36,7 @@ if (Test-Path -LiteralPath $distPath) {
 
 Push-Location $repositoryRoot
 try {
-  & (Join-Path $repositoryRoot "node_modules\.bin\electron-builder.cmd") --win --x64
+  & (Join-Path $repositoryRoot "node_modules\.bin\electron-builder.cmd") --win --x64 --publish never
   if ($LASTEXITCODE -ne 0) {
     throw "electron-builder failed with exit code $LASTEXITCODE"
   }
