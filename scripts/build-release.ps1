@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
-$version = "1.0.2"
+$version = (Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot '..\package.json') | ConvertFrom-Json).version
 $repositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $distPath = Join-Path $repositoryRoot "dist"
 $expectedDistPath = [System.IO.Path]::GetFullPath((Join-Path $repositoryRoot "dist"))

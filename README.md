@@ -1,10 +1,12 @@
 <div align="center">
 
+> 最新バージョン: 1.0.3（2026-10-31）。ローカルの未公開変更を反映し、ソースと配布物を揃えた同期リリースです。
+
 # PC Spec Tool
 **Windows 上で PC の基本情報を確認できるデスクトップアプリ**
 
-![Electron](https://img.shields.io/badge/Electron-39.x-47848f)
-![Node.js](https://img.shields.io/badge/Node.js-22.x-339933)
+![Electron](https://img.shields.io/badge/Electron-45.x-47848f)
+![Node.js](https://img.shields.io/badge/Node.js-24.x-339933)
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078d6)
 
 </div>
@@ -29,22 +31,22 @@ Electron を使用して構成しており、HTML・CSS・JavaScript ベース�
 
 ## 動作環境
 - Windows 10 / 11
-- Node.js 22 系
+- Node.js 24 系（開発時）
 - npm
 
 ## 配布ファイル
 GitHub の **Releases** では、以下の形式で配布します。
 
 ### インストール版
-`PC-Spec-Tool-Setup-1.0.2.exe`
+`PC-Spec-Tool-Setup-1.0.3.exe`
 
 NSISインストーラー形式で、通常のインストール、スタートメニュー登録、アンインストールに対応しています。
 設定やElectronデータは通常のAppDataへ保存されます。
 
 ### ポータブル版
-`PC-Spec-Tool-Portable-1.0.2.exe`
+`PC-Spec-Tool-Portable-1.0.3.exe`
 
-`PC-Spec-Tool-Portable-1.0.2.zip`
+`PC-Spec-Tool-Portable-1.0.3.zip`
 
 DLL、resources、localesなどが外に並ばない単体EXEです。
 
@@ -55,8 +57,8 @@ DLL、resources、localesなどが外に並ばない単体EXEです。
 GitHub の **Releases** から、インストール版またはポータブル版を取得します。
 
 ### 2. 利用方法
-- インストール版: `PC-Spec-Tool-Setup-1.0.2.exe` を実行してセットアップ
-- ポータブル版: ZIPを展開し、`PC-Spec-Tool-Portable-1.0.2.exe` を起動
+- インストール版: `PC-Spec-Tool-Setup-1.0.3.exe` を実行してセットアップ
+- ポータブル版: ZIPを展開し、`PC-Spec-Tool-Portable-1.0.3.exe` を起動
 
 ## 開発環境での起動方法
 ### 1. リポジトリを取得
@@ -74,6 +76,16 @@ npm install
 ```bash
 npm start
 ```
+
+### セキュリティ検証
+```bash
+npm test
+npm run test:security
+npm audit
+```
+
+`test:security` は別の一時データフォルダーで実際のElectronを起動し、表示、CSP、画面遷移制限、IPC送信元検証を確認します。
+機器情報とエラーはHTMLとして解釈せず、文字列として表示します。アプリ内から外部ページへの遷移と新規ウィンドウの作成は拒否します。
 
 ### 4. Windows向け配布物を作成
 ```powershell

@@ -1,7 +1,13 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const fs = require("fs");
 const path = require("path");
+const { pathToFileURL } = require("url");
 const si = require("systeminformation");
+const { configureWindowSecurity, isTrustedIpcSender } = require("./services/window-security");
+
+const entryPath = path.join(__dirname, "index.html");
+const entryUrl = pathToFileURL(entryPath).href;
+let mainWindow = null;
 
 function ensureDirectory(directoryPath) {
   fs.mkdirSync(directoryPath, { recursive: true });
@@ -92,14 +98,26 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
-      nodeIntegration: false
+      nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
+      navigateOnDragDrop: false
     }
   });
 
-  win.loadFile("index.html");
+  mainWindow = win;
+  configureWindowSecurity(win);
+  win.on("closed", () => {
+    if (mainWindow === win) mainWindow = null;
+  });
+  win.loadFile(entryPath);
 }
 
-ipcMain.handle("get-system-info", async () => {
+ipcMain.handle("get-system-info", async (event) => {
+  if (!isTrustedIpcSender(event, mainWindow, entryUrl)) {
+    throw new Error("許可されていない画面からの情報取得を拒否しました。");
+  }
+
   const [cpu, mem, os, graphics, baseboard] = await Promise.all([
     si.cpu(),
     si.mem(),

@@ -4,51 +4,29 @@ import { memoryTemplate } from "../templates/memory-template.js";
 import { motherboardTemplate } from "../templates/motherboard-template.js";
 import { osTemplate } from "../templates/os-template.js";
 import { storageTemplate } from "../templates/storage-template.js";
+import { createMessageView } from "./spec-view.js";
 
 let systemInfo = null;
 
-function createStaticHtml(tabName) {
-  const staticData = {
-    About: `<h2>About</h2><p>PC Spec Tool の試作版です。</p>`
-  };
-
-  return staticData[tabName] || "<h2>Not Found</h2>";
-}
+const tabTemplates = new Map([
+  ["CPU", cpuTemplate],
+  ["Mainboard", motherboardTemplate],
+  ["Graphics", gpuTemplate],
+  ["Memory", memoryTemplate],
+  ["OS", osTemplate],
+  ["Storage", storageTemplate]
+]);
 
 function renderTab(tabName) {
   const panel = document.querySelector(".panel");
 
-  if (tabName === "CPU") {
-    panel.innerHTML = cpuTemplate(systemInfo);
-    return;
-  }
-
-  if (tabName === "Mainboard") {
-    panel.innerHTML = motherboardTemplate(systemInfo);
-    return;
-  }
-
-  if (tabName === "Graphics") {
-    panel.innerHTML = gpuTemplate(systemInfo);
-    return;
-  }
-
-  if (tabName === "Memory") {
-    panel.innerHTML = memoryTemplate(systemInfo);
-    return;
-  }
-
-  if (tabName === "OS") {
-    panel.innerHTML = osTemplate(systemInfo);
-    return;
-  }
-
-  if (tabName === "Storage") {
-    panel.innerHTML = storageTemplate(systemInfo);
-    return;
-  }
-
-  panel.innerHTML = createStaticHtml(tabName);
+  const template = tabTemplates.get(tabName);
+  const view = template
+    ? template(systemInfo)
+    : tabName === "About"
+      ? createMessageView("About", "PC Spec Tool の試作版です。")
+      : createMessageView("Not Found", "");
+  panel.replaceChildren(view);
 }
 
 async function initApp() {
@@ -56,13 +34,9 @@ async function initApp() {
 
   try {
     systemInfo = await window.pcInfo.getSystemInfo();
-    console.log(systemInfo);
   } catch (error) {
     console.error(error);
-    panel.innerHTML = `
-      <h2>エラー</h2>
-      <p>${error.message}</p>
-    `;
+    panel.replaceChildren(createMessageView("エラー", error.message));
     return;
   }
 

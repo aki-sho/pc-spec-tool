@@ -1,26 +1,22 @@
+import { createMessageView, createSpecView } from "../renderer/spec-view.js";
+
 export function gpuTemplate(systemInfo) {
   if (!systemInfo) {
-    return "<h2>Graphics</h2><p>読み込み中です...</p>";
+    return createMessageView("Graphics", "読み込み中です...");
   }
 
   const controllers = systemInfo.graphics?.controllers || [];
 
   if (controllers.length === 0) {
-    return `
-      <h2>Graphics</h2>
-      <p>GPU情報を取得できませんでした。</p>
-    `;
+    return createMessageView("Graphics", "GPU情報を取得できませんでした。");
   }
 
   const gpu = controllers[0];
 
-  return `
-    <h2>Graphics</h2>
-    <div class="spec-grid">
-      <div class="label">Model</div><div class="value">${gpu.model || "-"}</div>
-      <div class="label">Vendor</div><div class="value">${gpu.vendor || "-"}</div>
-      <div class="label">VRAM</div><div class="value">${gpu.vram ? gpu.vram + " MB" : "-"}</div>
-      <div class="label">Bus</div><div class="value">${gpu.bus || "-"}</div>
-    </div>
-  `;
+  return createSpecView("Graphics", [
+    ["Model", gpu.model || "-"],
+    ["Vendor", gpu.vendor || "-"],
+    ["VRAM", gpu.vram ? gpu.vram + " MB" : "-"],
+    ["Bus", gpu.bus || "-"]
+  ]);
 }

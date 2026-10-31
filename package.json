@@ -1,29 +1,36 @@
 {
   "name": "pc-spec-tool",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "PC spec viewer",
   "author": "akisho",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "test": "node --test tests/window-security.test.cjs",
+    "test:security": "node scripts/run-security-tests.cjs",
     "build": "electron-builder --win --x64",
     "build:release": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-release.ps1"
   },
   "dependencies": {
-    "systeminformation": "^5.31.17"
+    "systeminformation": "^5.33.19"
   },
   "devDependencies": {
-    "electron": "^39.8.3",
-    "electron-builder": "^26.8.1"
+    "electron": "^45.2.0",
+    "electron-builder": "^26.18.0"
   },
   "build": {
     "appId": "com.example.pcspectool",
     "productName": "PC Spec Tool",
     "asar": true,
     "files": [
-      "**/*",
-      "!scripts/**/*",
-      "!build/**/*"
+      "main.js",
+      "preload.js",
+      "index.html",
+      "renderer/**/*",
+      "templates/**/*",
+      "services/**/*",
+      "styles/**/*",
+      "assets/**/*"
     ],
     "win": {
       "target": [
