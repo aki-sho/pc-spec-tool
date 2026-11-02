@@ -29,6 +29,16 @@ child.on("error", (error) => {
   process.exitCode = 1;
 });
 child.on("close", (code) => {
-  cleanUp();
-  process.exitCode = code === 0 ? 0 : 1;
+  let exitCode = code === 0 ? 0 : 1;
+  try {
+    if (exitCode === 0 && process.env.PC_SPEC_SECURITY_APP_ROOT) {
+      require("./verify-package.cjs").verifyPackage(process.env.PC_SPEC_SECURITY_APP_ROOT);
+    }
+  } catch (error) {
+    console.error(error);
+    exitCode = 1;
+  } finally {
+    cleanUp();
+    process.exitCode = exitCode;
+  }
 });

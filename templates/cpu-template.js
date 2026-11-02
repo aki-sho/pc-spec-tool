@@ -6,10 +6,10 @@ export function cpuTemplate(systemInfo) {
   }
 
   return createSpecView("CPU", [
-    ["Manufacturer", systemInfo.cpu?.manufacturer || "-"],
-    ["Brand", systemInfo.cpu?.brand || "-"],
-    ["Cores", systemInfo.cpu?.cores ?? "-"],
-    ["Physical Cores", systemInfo.cpu?.physicalCores ?? "-"],
-    ["Speed", systemInfo.cpu?.speed ? systemInfo.cpu.speed + " GHz" : "-"]
+    ["メーカー", systemInfo.cpu?.manufacturer || "—"],
+    ["モデル", systemInfo.cpu?.brand || "—"],
+    ["論理コア", systemInfo.cpu?.cores ?? "—"],
+    ["物理コア", systemInfo.cpu?.physicalCores ?? "—"],
+    ["クロック", systemInfo.cpu?.speed ? systemInfo.cpu.speed + " GHz" : "—"]
   ]);
 }

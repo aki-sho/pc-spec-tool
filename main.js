@@ -1,13 +1,17 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, clipboard, dialog } = require("electron");
 const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const si = require("systeminformation");
 const { configureWindowSecurity, isTrustedIpcSender } = require("./services/window-security");
+const { createHardwareService } = require("./services/hardware-service");
+const { validateExportOptions, createReport } = require("./services/spec-export");
 
 const entryPath = path.join(__dirname, "index.html");
 const entryUrl = pathToFileURL(entryPath).href;
 let mainWindow = null;
+const hardware = createHardwareService(si);
+const appVersion = require("./package.json").version;
 
 function ensureDirectory(directoryPath) {
   fs.mkdirSync(directoryPath, { recursive: true });
@@ -89,10 +93,11 @@ writeStartupLog();
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 900,
-    height: 640,
-    minWidth: 760,
-    minHeight: 520,
+    width: 1180,
+    height: 820,
+    minWidth: 860,
+    minHeight: 620,
+    backgroundColor: "#100d1a",
     title: "PC Spec Tool",
     autoHideMenuBar: true,
     webPreferences: {
@@ -113,46 +118,45 @@ function createWindow() {
   win.loadFile(entryPath);
 }
 
-ipcMain.handle("get-system-info", async (event) => {
+function assertTrusted(event) {
   if (!isTrustedIpcSender(event, mainWindow, entryUrl)) {
     throw new Error("許可されていない画面からの情報取得を拒否しました。");
   }
+}
 
-  const [cpu, mem, os, graphics, baseboard] = await Promise.all([
-    si.cpu(),
-    si.mem(),
-    si.osInfo(),
-    si.graphics(),
-    si.baseboard()
-  ]);
+ipcMain.handle("get-system-info", (event, sections) => {
+  assertTrusted(event);
+  return hardware.collect(sections);
+});
 
-  return {
-    cpu: {
-      manufacturer: cpu.manufacturer,
-      brand: cpu.brand,
-      cores: cpu.cores,
-      physicalCores: cpu.physicalCores,
-      speed: cpu.speed
-    },
-    memory: {
-      totalGB: (mem.total / 1024 / 1024 / 1024).toFixed(2)
-    },
-    os: {
-      distro: os.distro,
-      release: os.release,
-      build: os.build,
-      arch: os.arch
-    },
-    graphics: {
-      controllers: graphics.controllers || []
-    },
-    mainboard: {
-      manufacturer: baseboard.manufacturer,
-      model: baseboard.model,
-      version: baseboard.version,
-      serial: baseboard.serial
-    }
-  };
+ipcMain.handle("get-app-info", (event) => {
+  assertTrusted(event);
+  return { version: appVersion };
+});
+
+ipcMain.handle("copy-system-info", (event, options) => {
+  assertTrusted(event);
+  const settings = validateExportOptions(options, false);
+  clipboard.writeText(createReport(hardware.snapshot(), settings, appVersion));
+  return { copied: true };
+});
+
+ipcMain.handle("save-system-info", async (event, options) => {
+  assertTrusted(event);
+  const settings = validateExportOptions(options);
+  const report = createReport(hardware.snapshot(), settings, appVersion);
+  const { canceled, filePath } = await dialog.showSaveDialog(mainWindow, {
+    title: "PCスペックを保存", buttonLabel: "保存",
+    defaultPath: `PC-Spec-${new Date().toISOString().slice(0, 10)}.${settings.format}`,
+    filters: [{ name: settings.format === "json" ? "JSON" : "テキスト", extensions: [settings.format] }]
+  });
+  if (canceled || !filePath) return { canceled: true };
+  assertTrusted(event);
+  if (path.extname(filePath).toLowerCase() !== `.${settings.format}`) {
+    throw new Error(`保存先の拡張子を .${settings.format} にしてください。`);
+  }
+  await fs.promises.writeFile(filePath, report, "utf8");
+  return { canceled: false, fileName: path.basename(filePath) };
 });
 
 app.whenReady().then(() => {

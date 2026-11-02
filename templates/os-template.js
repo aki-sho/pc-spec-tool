@@ -6,9 +6,9 @@ export function osTemplate(systemInfo) {
   }
 
   return createSpecView("OS", [
-    ["Name", systemInfo.os?.distro || "-"],
-    ["Release", systemInfo.os?.release || "-"],
-    ["Build", systemInfo.os?.build || "-"],
-    ["Architecture", systemInfo.os?.arch || "-"]
+    ["OS", systemInfo.os?.distro || "—"],
+    ["リリース", systemInfo.os?.release || "—"],
+    ["ビルド", systemInfo.os?.build || "—"],
+    ["アーキテクチャ", systemInfo.os?.arch || "—"]
   ]);
 }

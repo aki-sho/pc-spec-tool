@@ -4,37 +4,49 @@
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
   <title>PC Spec Tool</title>
   <link rel="stylesheet" href="./styles/app.css" />
 </head>
 <body>
   <div class="app">
-    <header class="topbar">
-      <div class="title">PC Spec Tool</div>
-    </header>
-
-    <nav class="tabs">
-      <button class="tab active" data-tab="CPU">CPU</button>
-      <button class="tab" data-tab="Mainboard">Mainboard</button>
-      <button class="tab" data-tab="Memory">Memory</button>
-      <button class="tab" data-tab="Graphics">Graphics</button>
-      <button class="tab" data-tab="Storage">Storage</button>
-      <button class="tab" data-tab="OS">OS</button>
-      <button class="tab" data-tab="About">About</button>
-    </nav>
-
-    <main class="content">
-      <section class="panel">
-        <h2>CPU</h2>
-        <p>読み込み中です...</p>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <span>Ver 0.1.0</span>
-    </footer>
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">P<span>·</span></span><div>PC SPEC<span class="brand-sub">HARDWARE EXPLORER</span></div></div>
+      <div class="nav-caption">WORKSPACE / 01</div>
+      <nav class="tabs" role="tablist" aria-label="スペック項目" aria-orientation="vertical">
+        <button id="tab-CPU" class="tab active" role="tab" aria-selected="true" aria-controls="spec-panel" data-tab="CPU"><span class="nav-icon" aria-hidden="true">01</span>CPU<span class="nav-arrow" aria-hidden="true">↗</span></button>
+        <button id="tab-Mainboard" class="tab" role="tab" aria-selected="false" aria-controls="spec-panel" tabindex="-1" data-tab="Mainboard"><span class="nav-icon" aria-hidden="true">02</span>Mainboard</button>
+        <button id="tab-Memory" class="tab" role="tab" aria-selected="false" aria-controls="spec-panel" tabindex="-1" data-tab="Memory"><span class="nav-icon" aria-hidden="true">03</span>Memory</button>
+        <button id="tab-Graphics" class="tab" role="tab" aria-selected="false" aria-controls="spec-panel" tabindex="-1" data-tab="Graphics"><span class="nav-icon" aria-hidden="true">04</span>Graphics</button>
+        <button id="tab-Storage" class="tab" role="tab" aria-selected="false" aria-controls="spec-panel" tabindex="-1" data-tab="Storage"><span class="nav-icon" aria-hidden="true">05</span>Storage</button>
+        <button id="tab-OS" class="tab" role="tab" aria-selected="false" aria-controls="spec-panel" tabindex="-1" data-tab="OS"><span class="nav-icon" aria-hidden="true">06</span>OS</button>
+        <button id="tab-About" class="tab" role="tab" aria-selected="false" aria-controls="spec-panel" tabindex="-1" data-tab="About"><span class="nav-icon" aria-hidden="true">i</span>About</button>
+      </nav>
+      <div class="sidebar-bottom"><span class="local-dot" aria-hidden="true"></span>LOCAL DEVICE<span id="app-version">PC Spec Tool</span></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar"><span class="breadcrumb">WORKSPACE <span>/</span> YOUR DEVICE</span><span class="system-status"><span class="local-dot" aria-hidden="true"></span><span id="system-state">READY</span></span></header>
+      <main class="content">
+        <section class="hero" aria-label="デバイス概要">
+          <div><p class="eyebrow">KNOW YOUR MACHINE.</p><h1>あなたのPCを、<span>ひと目で。</span></h1><p class="hero-description">構成を確かめる。情報をまとめる。次の一手へ。</p></div>
+          <button id="refresh" class="button primary" type="button">すべて更新</button>
+        </section>
+        <div class="summary-strip" aria-label="スペック概要">
+          <div class="summary-item"><span>PROCESSOR</span><strong id="summary-cpu">—</strong></div>
+          <div class="summary-item"><span>MEMORY</span><strong id="summary-memory">—</strong></div>
+          <div class="summary-item"><span>GRAPHICS</span><strong id="summary-graphics">—</strong></div>
+          <div class="summary-item"><span>STORAGE</span><strong id="summary-storage">—</strong></div>
+        </div>
+        <div class="section-meta"><span class="eyebrow">DEVICE DETAILS</span><div><span id="last-updated">未取得</span><button id="retry-failed" class="text-button" type="button" hidden>失敗した項目を再試行</button></div></div>
+        <section id="spec-panel" class="panel" role="tabpanel" aria-labelledby="tab-CPU" tabindex="0"><h2>CPU</h2><p>読み込み中です...</p></section>
+      </main>
+      <footer class="export-bar" aria-label="スペックの出力">
+        <div class="export-description"><strong>スペックを持ち出す</strong><label class="serial-option"><input id="include-serial" class="export-control" type="checkbox" />シリアル番号を含める</label></div>
+        <div class="export-actions"><button id="copy" class="button export-control" type="button">一覧をコピー</button><label class="visually-hidden" for="export-format">保存形式</label><select id="export-format" class="export-control" aria-label="保存形式"><option value="txt">TXT</option><option value="json">JSON</option></select><button id="save" class="button accent export-control" type="button">ファイルに保存 ↗</button></div>
+        <p id="notice" class="notice" role="status" aria-live="polite">PCの情報を取得します。</p>
+      </footer>
+    </div>
   </div>
-
   <script type="module" src="./renderer/app.js"></script>
 </body>
 </html>

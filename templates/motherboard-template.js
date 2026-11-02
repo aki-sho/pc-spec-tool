@@ -6,9 +6,9 @@ export function motherboardTemplate(systemInfo) {
   }
 
   return createSpecView("Mainboard", [
-    ["Manufacturer", systemInfo.mainboard?.manufacturer || "-"],
-    ["Model", systemInfo.mainboard?.model || "-"],
-    ["Version", systemInfo.mainboard?.version || "-"],
-    ["Serial", systemInfo.mainboard?.serial || "-"]
+    ["メーカー", systemInfo.mainboard?.manufacturer || "—"],
+    ["モデル", systemInfo.mainboard?.model || "—"],
+    ["リビジョン", systemInfo.mainboard?.version || "—"],
+    ["シリアル番号", systemInfo.mainboard?.serial || "—"]
   ]);
 }

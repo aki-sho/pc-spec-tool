@@ -1,8 +1,8 @@
-PC Spec Tool Portable 1.0.2
+PC Spec Tool Portable {{VERSION}}
 ================================
 
 【起動方法】
-ZIPを展開し、PC-Spec-Tool-Portable-1.0.2.exe をダブルクリックしてください。
+ZIPを展開し、PC-Spec-Tool-Portable-{{VERSION}}.exe をダブルクリックしてください。
 DLL、resources、localesなどの追加ファイルは不要です。
 
 【PortableDataの場所】
@@ -21,7 +21,7 @@ ElectronのuserData、sessionData、設定、ログ、キャッシュ、一時�
 【削除方法】
 PC Spec Toolを終了してから、次の2つを削除してください。
 
-- PC-Spec-Tool-Portable-1.0.2.exe
+- PC-Spec-Tool-Portable-{{VERSION}}.exe
 - PC-Spec-Tool-PortableData
 
 レジストリへのインストール情報やアンインストール操作はありません。
